@@ -23,7 +23,7 @@ namespace ConsoleApp2
         /// <param name="field"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public static void DoTurn(Field field, int x, int y)
+        public static bool DoTurn(Field field, int x, int y)
         {
             try
             {
@@ -39,8 +39,9 @@ namespace ConsoleApp2
 
             if (CheckFieldForWin(field, x, y))
             {
-                Win(field);
+                return Win(field);
             }
+            return false;
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace ConsoleApp2
         /// <param name="vectorX"></param>
         /// <param name="vectrorY"></param>
         /// <param name="rowLenght"></param>
-        public static bool CheckFieldForWin(Field field, int x, int y, int vectorX = 0, int vectrorY = 0, int rowLenght = 1)
+        private static bool CheckFieldForWin(Field field, int x, int y, int vectorX = 0, int vectrorY = 0, int rowLenght = 1)
         {
             for (int j = -1; j < 2; j++)
             {
@@ -60,7 +61,7 @@ namespace ConsoleApp2
                 {
                     try
                     {
-                        if (field._field[x + i, y + j] == currentSymbol && x + i != x && y + j != y)
+                        if (field._field[x + i, y + j] == currentSymbol && !(x + i == x && y + j == y))
                         {
                             if (CheckFront(field, x, y, i, j) + CheckReverse(field, x, y, i, j) >= WinRowLengt)
                             {
@@ -135,10 +136,11 @@ namespace ConsoleApp2
         /// <summary>
         /// Win game message
         /// </summary>
-        private static void Win(Field field)
+        private static bool Win(Field field)
         {
             Console.WriteLine("YOU WIN");
             new AI().AddSnapshot(field);
+            return true;
         }
     }
 }
