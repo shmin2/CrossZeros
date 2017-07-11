@@ -25,23 +25,28 @@ namespace ConsoleApp2
         /// <param name="y"></param>
         public static bool DoTurn(Field field, int x, int y)
         {
-            try
-            {
-                enumerator.MoveNext();
-                currentSymbol = (char)enumerator.Current;
-            }
-            catch (Exception)
-            {
-                enumerator.Reset();
-                enumerator.MoveNext();
-                currentSymbol = (char)enumerator.Current;
-            }
+            ChangeCurrentPlayer();
 
             if (CheckFieldForWin(field, x, y))
             {
                 return Win(field);
             }
             return false;
+        }
+
+        private static void ChangeCurrentPlayer()
+        {
+            try
+            {
+                enumerator.MoveNext();
+                currentSymbol = (char) enumerator.Current;
+            }
+            catch (Exception)
+            {
+                enumerator.Reset();
+                enumerator.MoveNext();
+                currentSymbol = (char) enumerator.Current;
+            }
         }
 
         /// <summary>
@@ -139,7 +144,7 @@ namespace ConsoleApp2
         private static bool Win(Field field)
         {
             Console.WriteLine("YOU WIN");
-            new AI().AddSnapshot(field);
+            new DatabaseFlow().AddSnapshot(field);
             return true;
         }
     }
